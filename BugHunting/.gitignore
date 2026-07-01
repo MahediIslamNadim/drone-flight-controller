@@ -1,0 +1,9 @@
+.env
+*.log
+phase_durations.env
+/bugbounty/
+scan_output/
+*.bak
+*.tmp
+trufflehog_tmp/
+clones/

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash -n ultimate_bughunter.sh)",
+      "Bash(command -v wscat)",
+      "Bash(wscat --version)",
+      "Bash(bash -n /home/Nadim/scripts/BugHunting/modules/phase_10_injections.sh)",
+      "Bash(bash -n /home/Nadim/scripts/BugHunting/modules/phase_12_advanced_vulns.sh)",
+      "Bash(bash -n /home/Nadim/scripts/BugHunting/modules/phase_22_cve_correlation.sh)",
+      "Bash(bash -n /home/Nadim/scripts/BugHunting/modules/config.sh)",
+      "Bash(bash -n /home/Nadim/scripts/BugHunting/modules/phase_2_alive.sh)",
+      "Bash(bash -n /home/Nadim/scripts/BugHunting/modules/phase_3_port.sh)",
+      "Bash(bash -n /home/Nadim/scripts/BugHunting/modules/phase_4_url.sh)",
+      "Bash(grep *)",
+      "Bash(bash -n /home/Nadim/scripts/BugHunting/modules/phase_1_subdomain.sh)",
+      "Bash(bash -n /home/Nadim/scripts/BugHunting/modules/phase_5_api.sh)",
+      "Bash(bash -n /home/Nadim/scripts/BugHunting/modules/phase_6_cloud.sh)"
+    ]
+  }
+}

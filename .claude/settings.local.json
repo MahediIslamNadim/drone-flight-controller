@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"from src.config.settings import settings; print\\(''DB path:'', settings.db_path\\)\")",
+      "Bash(supabase --version)",
+      "Bash(supabase status *)",
+      "Bash(supabase migration *)",
+      "Bash(supabase projects *)",
+      "Read(//tmp/**)",
+      "Bash(grep -rl \"menu_item_metrics\" supabase/)",
+      "Bash(grep -rl \"order_count\" supabase/)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}
