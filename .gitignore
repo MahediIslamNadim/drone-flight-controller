@@ -1,9 +1,46 @@
-.aider*
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# Arduino
+*.o
+*.a
+*.elf
+*.hex
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
 gui_stderr.txt
 gui_stdout.txt
-.venv/
+
+# Calibration data
+calibration_*.json
+
+# Aider
+.aider*
+
+# Other projects (not part of this repo)
 .claude/
 AI_project/
 ARIA/
@@ -13,3 +50,4 @@ NexStudy/
 QRManager/
 QRManager_recovery/
 ShopEye.7z
+.venv/
