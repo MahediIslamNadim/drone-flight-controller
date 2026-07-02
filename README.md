@@ -3,168 +3,91 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-ESP8266-orange)
 ![Arduino](https://img.shields.io/badge/Arduino-IDE-00979D)
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 
-ESP8266-based quadcopter flight controller with real-time ground station GUI. Features full PID control, MAVLink telemetry, Wi-Fi AP mode, and sensor fusion via Madgwick filter.
+ESP8266-based quadcopter flight controller firmware with full PID control, sensor fusion, MAVLink telemetry, and safety features.
 
-## Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                   Ground Station (Python GUI)                │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────────┐  │
-│  │ 3D View  │ │  Graphs  │ │ Compass  │ │  Data Logger   │  │
-│  └────┬─────┘ └────┬─────┘ └────┬─────┘ └───────┬────────┘  │
-│       └────────────┴────────────┴────────────────┘           │
-│                         │ Serial/Wi-Fi                        │
-├─────────────────────────┼─────────────────────────────────────┤
-│                Flight Controller (ESP8266)                     │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────────┐  │
-│  │ MPU6050  │ │  BMP280  │ │  Madgwick│ │  PID Control   │  │
-│  │ IMU      │ │ Barometer│ │  Filter  │ │  (Rate+Angle)  │  │
-│  └────┬─────┘ └────┬─────┘ └────┬─────┘ └───────┬────────┘  │
-│       └────────────┴────────────┴────────────────┘           │
-│                         │ PPM / PWM                            │
-│                    ┌────┴────┐                                 │
-│                    │ Motors  │  (4x PWM)                       │
-│                    └─────────┘                                 │
-└─────────────────────────────────────────────────────────────┘
-```
+> **Ground Station GUI** available at: [github.com/MahediIslamNadim/ground-station-gui](https://github.com/MahediIslamNadim/ground-station-gui)
 
 ## Features
 
-### Flight Controller (ESP8266)
 - **Sensor Fusion**: MPU6050 (accel/gyro) + BMP280 (barometer) via Madgwick filter
 - **PID Control**: Cascaded rate + angle PID on roll/pitch, rate-only on yaw
 - **Flight Modes**: Stabilize, Altitude Hold, RTL (Return-to-Launch)
-- **MAVLink Telemetry**: Full MAVLink v1 protocol over serial
-- **Wi-Fi AP Mode**: Built-in web interface for configuration
+- **MAVLink**: Full MAVLink v1 telemetry over serial
+- **Wi-Fi AP**: Built-in web interface for configuration
 - **Safety**: Arm/disarm, failsafe detection, geofence, low battery cutoff
 - **EEPROM**: Persistent parameter storage
 - **Binary Logging**: Black box flight data recording
-- **PPM Receiver**: Support for standard RC receivers
+- **PPM Receiver**: Standard RC receiver support
 
-### Ground Station (Python GUI)
-- **3D Attitude Visualization**: Real-time aircraft orientation
-- **Sensor Graphs**: Live accelerometer, gyroscope, and altitude plots
-- **Calibration Wizard**: Step-by-step accel/gyro calibration
-- **MAVLink Telemetry**: Parameter read/write, mission planning
-- **Data Export**: JSON, CSV, and MAVLink log formats
-- **Serial Auto-Detect**: Automatic port detection and connection
-
-## Hardware Requirements
+## Hardware
 
 | Component | Specification |
 |-----------|---------------|
-| MCU | ESP8266 (NodeMCU, Wemos D1 Mini, etc.) |
-| IMU | MPU6050 (accelerometer + gyroscope) |
-| Barometer | BMP280 (optional, for altitude hold) |
-| ESC | 4x PWM-controlled ESCs |
-| Frame | Any 250mm+ quadcopter frame |
-| Receiver | PPM-compatible RC receiver |
+| MCU | ESP8266 (NodeMCU, Wemos D1 Mini) |
+| IMU | MPU6050 |
+| Barometer | BMP280 (optional) |
+| ESC | 4x PWM-controlled |
+| Frame | 250mm+ quadcopter |
+| Receiver | PPM-compatible |
 
 ## Wiring
 
-| MPU6050 | ESP8266 |
-|---------|---------|
-| VCC | 3.3V |
-| GND | GND |
-| SDA | D2 (GPIO4) |
-| SCL | D1 (GPIO5) |
+| MPU6050 | ESP8266 | BMP280 | ESP8266 |
+|---------|---------|--------|---------|
+| VCC | 3.3V | VCC | 3.3V |
+| GND | GND | GND | GND |
+| SDA | D2 (GPIO4) | SDA | D2 (GPIO4) |
+| SCL | D1 (GPIO5) | SCL | D1 (GPIO5) |
 
-| BMP280 | ESP8266 |
-|--------|---------|
-| VCC | 3.3V |
-| GND | GND |
-| SDA | D2 (GPIO4) |
-| SCL | D1 (GPIO5) |
+## Build & Upload
 
-## Getting Started
-
-### 1. Upload Firmware
-
-Open `esp8266_flight_controller/esp8266_flight_controller.ino` in Arduino IDE:
-
-1. Install ESP8266 board support (Boards Manager: `esp8266 by ESP8266 Community`)
-2. Install required libraries: `Wire`, `EEPROM`, `ESP8266WebServer`, `ESP8266WiFi`
-3. Select board: `NodeMCU 1.0 (ESP-12E)` or your specific variant
-4. Set flash size: `4MB (1MB SPIFFS)`
-5. Upload via USB
-
-### 2. Install Ground Station
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Run Ground Station
-
-```bash
-python drone_calibration.py
-```
-
-### 4. Calibrate Sensors
-
-1. Select serial port and click **CONNECT**
-2. Place the drone on a level surface
-3. Click **CALIBRATE ACCEL** and wait
-4. Keep the drone perfectly still, click **CALIBRATE GYRO**
-5. Save calibration profile
+1. Install **ESP8266** board support in Arduino IDE
+2. Install libraries: `Wire`, `EEPROM`, `ESP8266WebServer`, `ESP8266WiFi`
+3. Select `NodeMCU 1.0 (ESP-12E)`, flash size `4MB (1MB SPIFFS)`
+4. Open `esp8266_flight_controller.ino` and upload
 
 ## Project Structure
 
 ```
-├── esp8266_flight_controller/
-│   ├── esp8266_flight_controller.ino   # Main firmware entry point
-│   ├── config.h                        # Configuration parameters
-│   ├── types.h                         # Data structures
-│   ├── globals.h                       # Global variables
-│   ├── mpu6050.cpp/.h                  # MPU6050 IMU driver
-│   ├── bmp280.cpp/.h                   # BMP280 barometer driver
-│   ├── madgwick.cpp/.h                 # Madgwick orientation filter
-│   ├── pid.cpp/.h                      # PID controller
-│   ├── motors.cpp/.h                   # Motor mixing and output
-│   ├── rc.cpp/.h                       # RC input (PPM)
-│   ├── flight_modes.cpp/.h             # Flight mode logic
-│   ├── safety.cpp/.h                   # Safety checks and failsafe
-│   ├── battery.cpp/.h                  # Battery monitoring
-│   ├── mavlink_send.cpp/.h             # MAVLink telemetry output
-│   ├── serial_cmd.cpp/.h               # Serial command parser
-│   ├── eeprom_params.cpp/.h            # EEPROM parameter storage
-│   ├── binary_log.cpp/.h               # Binary flight logging
-│   ├── led.cpp/.h                      # LED indicators
-│   ├── wifi_ap.cpp/.h                  # Wi-Fi access point mode
-│   └── i2c.cpp/.h                      # I2C bus manager
-├── drone_calibration.py                # Ground station GUI
-├── esp8266_mpu6050.ino                 # Standalone IMU test sketch
-├── test_ports.py                       # Serial port diagnostics
-├── requirements.txt                    # Python dependencies
-├── LICENSE                             # MIT License
-└── README.md                           # This file
+├── config.h                  # Configuration parameters
+├── types.h                   # Data structures
+├── globals.h                 # Global state
+├── mpu6050.cpp/.h            # IMU driver
+├── bmp280.cpp/.h             # Barometer driver
+├── madgwick.cpp/.h           # Orientation filter
+├── pid.cpp/.h                # PID controller
+├── motors.cpp/.h             # Motor mixing & output
+├── rc.cpp/.h                 # PPM input
+├── flight_modes.cpp/.h       # Flight mode logic
+├── safety.cpp/.h             # Failsafe & checks
+├── battery.cpp/.h            # Battery monitor
+├── mavlink_send.cpp/.h       # MAVLink output
+├── serial_cmd.cpp/.h         # Serial command parser
+├── eeprom_params.cpp/.h      # Parameter storage
+├── binary_log.cpp/.h         # Flight logging
+├── led.cpp/.h                # Status LEDs
+├── wifi_ap.cpp/.h            # Wi-Fi access point
+└── i2c.cpp/.h                # I2C bus manager
 ```
 
 ## Serial Commands
 
 | Command | Description |
 |---------|-------------|
-| `CALIBRATE` | Run full IMU calibration |
-| `RESET` | Reset calibration offsets to zero |
-| `STATUS` | Display current sensor offsets |
-| `SET_ACCEL_OFFSET:x,y,z` | Set accelerometer offsets |
-| `SET_GYRO_OFFSET:x,y,z` | Set gyroscope offsets |
-| `ARM` | Arm the motors |
-| `DISARM` | Disarm the motors |
-| `HELP` | List available commands |
+| `CALIBRATE` | Run IMU calibration |
+| `RESET` | Reset offsets |
+| `STATUS` | Show sensor offsets |
+| `SET_ACCEL_OFFSET:x,y,z` | Set accel offsets |
+| `SET_GYRO_OFFSET:x,y,z` | Set gyro offsets |
+| `ARM` | Arm motors |
+| `DISARM` | Disarm motors |
+| `HELP` | List commands |
 
 ## Configuration
 
-Edit `esp8266_flight_controller/config.h` to tune:
-
-- **PID gains**: `PID_RATE_ROLL_P`, `PID_RATE_ROLL_I`, `PID_RATE_ROLL_D`, etc.
-- **RC ranges**: `RC_MIN`, `RC_MAX`, `RC_MID`
-- **Battery**: `BATTERY_CELL_FULL`, `BATTERY_CELL_EMPTY`
-- **Safety**: `ARM_TIMEOUT_MS`, `FAILSAFE_THROTTLE_US`
+Edit `config.h` to tune PID gains, RC ranges, battery thresholds, and safety parameters.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE).
