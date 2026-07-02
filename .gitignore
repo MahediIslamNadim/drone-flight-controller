@@ -1,1 +1,15 @@
 .aider*
+__pycache__/
+*.pyc
+gui_stderr.txt
+gui_stdout.txt
+.venv/
+.claude/
+AI_project/
+ARIA/
+BugHunting/
+Nadim Shows/
+NexStudy/
+QRManager/
+QRManager_recovery/
+ShopEye.7z
